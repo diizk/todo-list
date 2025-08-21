@@ -113,21 +113,23 @@ const toggleForm = () => {
   isRegistering.value = !isRegistering.value;
 };
 
+const router = useRouter();
+
 const login = async () => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/login', loginForm.value);
     
     const token = response.data.access_token;
 
-    const user = response.data.user;
+    const user = response.data.data;
     
     localStorage.setItem('sanctum_token', token);
     localStorage.setItem('user_data', JSON.stringify(user));
+    
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     console.log('Login realizado com sucesso!');
-    await nextTick();
     router.push('/');
   } catch (error) {
     console.error('Falha no login:', error.response.data);
