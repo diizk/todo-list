@@ -1,44 +1,81 @@
 <template>
-  <div class="flex flex-col h-screen bg-gray-100">
-    <header class="flex items-center justify-between px-6 py-4 bg-white border-b shadow-sm">
-      <div class="text-xl font-semibold text-gray-800">
-        Gerenciador de Tarefas
-      </div>
-      <div class="relative">
-        <button
-          @click="isMenuOpen = !isMenuOpen"
-          class="flex items-center space-x-2 text-gray-600 focus:outline-none"
+  <div class="flex h-screen bg-gray-100">
+    <aside class="w-64 bg-white p-4 space-y-4 shadow-lg">
+      <div class="flex items-center space-x-2">
+        <svg
+          class="h-8 w-8 text-blue-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <span>Bem-vindo, {{ userName }}</span>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M16 16h.01"
+          ></path>
+        </svg>
+        <span class="text-xl font-bold text-gray-800">Todo List</span>
+      </div>
+
+      <nav class="space-y-2">
+        <a
+          href="#"
+          class="flex items-center space-x-2 p-2 rounded-lg bg-blue-100 text-blue-700 font-medium"
+        >
           <svg
-            class="w-4 h-4 transition-transform duration-200"
-            :class="{ 'rotate-180': isMenuOpen }"
+            class="h-5 w-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-9v10a1 1 0 01-1 1h-3m-6 0v-9a1 1 0 011-1h2a1 1 0 011 1v3m-5 3v1h8v-1m-4 5h1"
+            ></path>
           </svg>
-        </button>
-        <div
-          v-if="isMenuOpen"
-          class="absolute right-0 w-48 mt-2 origin-top-right bg-white border rounded-md shadow-lg"
-        >
-          <a
-            @click.prevent="logout"
-            href="#"
-            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >
-            Sair
-          </a>
+          <span>Dashboard</span>
+        </a>
+      </nav>
+
+      <div class="pt-8">
+        <div class="text-sm font-semibold text-gray-500 mb-2">Usuário:</div>
+        <div class="flex items-center space-x-2">
+          <div class="flex-shrink-0">
+            <svg
+              class="h-8 w-8 text-gray-400"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              ></path>
+            </svg>
+          </div>
+          <div>
+            <div class="text-lg font-bold text-gray-900">{{ userName }}</div>
+            <div class="text-sm text-gray-500">Online</div>
+          </div>
         </div>
       </div>
-    </header>
+    </aside>
 
     <main class="flex-1 p-6 overflow-y-auto">
       <div class="max-w-4xl mx-auto">
-        <h1 class="mb-6 text-3xl font-bold text-gray-800">Minhas Tarefas</h1>
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-3xl font-bold text-gray-800">Minhas Tarefas</h1>
+          <button
+            @click="goToCreateTask"
+            class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none"
+          >
+            Criar Tarefa
+          </button>
+        </div>
         <div class="space-y-4">
           <div
             v-for="task in tasks"
@@ -82,11 +119,34 @@
         </div>
       </div>
     </main>
+
+    <div class="absolute bottom-4 right-4">
+      <button
+        @click="logout"
+        class="flex items-center px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none"
+      >
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-5V8m0 9v-2m0 2H7a2 2 0 01-2-2V8a2 2 0 012-2h6"
+          ></path>
+        </svg>
+        Sair
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onActivated } from 'vue'; // Importe onActivated
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
@@ -108,22 +168,28 @@ const getStatusColor = (status) => {
   }
 };
 
+const logout = () => {
+  localStorage.removeItem('sanctum_token');
+  axios.defaults.headers.common['Authorization'] = null;
+  router.push('/login');
+};
+
 const fetchUserData = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user');
-    userName.value = response.data.name;
+    const storedUser = localStorage.getItem('user_data');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      userName.value = user.name;
+    }
   } catch (error) {
     console.error('Erro ao buscar dados do usuário:', error);
-    // Se o token for inválido, redireciona para o login
-    router.push('/login');
   }
 };
 
 const fetchTasks = async () => {
   try {
-    console.log('Fetching tasks...');
     const response = await axios.get('http://127.0.0.1:8000/api/tasks');
-    tasks.value = response.data.data;
+    tasks.value = response.data;
   } catch (error) {
     console.error('Erro ao buscar tarefas:', error);
   }
@@ -153,41 +219,23 @@ const deleteTask = async (taskId) => {
 };
 
 const goToEditTask = (taskId) => {
-  router.push(`/tasks/${taskId}/edit`);
+  router.push({ name: 'EditTask', params: { id: taskId } });
 };
 
-const logout = () => {
-  localStorage.removeItem('sanctum_token');
-  axios.defaults.headers.common['Authorization'] = null;
-  router.push('/login');
+const goToCreateTask = () => {
+  router.push({ name: 'CreateTask' });
 };
 
 onMounted(() => {
-  const storedUser = localStorage.getItem('user_data');
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    userName.value = user.name;
-  }
-  
+  fetchUserData();
+  fetchTasks();
+});
+
+onActivated(() => {
   fetchTasks();
 });
 </script>
 
 <style scoped>
-/* Estilos para o select box */
-select {
-  @apply text-white;
-}
-
-select.bg-red-500 {
-  background-color: #ef4444;
-}
-
-select.bg-yellow-500 {
-  background-color: #f59e0b;
-}
-
-select.bg-green-500 {
-  background-color: #10b981;
-}
+/* Adicione estilos específicos do componente aqui se necessário */
 </style>

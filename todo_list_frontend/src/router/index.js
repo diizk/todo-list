@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Auth/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
-import EditTask from '../views/EditTask.vue'
+import TaskForm from '../views/TaskForm.vue'
 
 const routes = [
   {
@@ -16,9 +16,15 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/tasks/:id/edit',
+    path: '/task/:id',
     name: 'EditTask',
-    component: () => import('../views/EditTask.vue'),
+    component: TaskForm,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/task/create',
+    name: 'CreateTask',
+    component: TaskForm,
     meta: { requiresAuth: true },
   },
 ];
