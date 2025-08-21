@@ -106,7 +106,6 @@ POST /api/login
 #### Logout
 ```http
 POST /api/logout
-# Autenticação: Bearer Token
 ```
 
 ---
