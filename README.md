@@ -141,3 +141,9 @@ PATCH /api/tasks/{id}
 ```http
 DELETE /api/tasks/{id}
 ```
+### Testes Automatizados
+```
+docker-compose exec app sh
+
+./vendor/bin/pest
+```
