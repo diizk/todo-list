@@ -1,6 +1,6 @@
 ### Todo List - Aplicação Full-Stack
 
-Este é um projeto de uma aplicação de gerenciamento de tarefas (Todo List) full-stack. O front-end foi construído com Vue 3 e Tailwind CSS, enquanto o back-end utiliza o framework Laravel para a API RESTful.
+- Este é um projeto de uma aplicação de gerenciamento de tarefas (Todo List) full-stack. O front-end foi construído com Vue 3 e Tailwind CSS, enquanto o back-end utiliza o framework Laravel para a API RESTful.
 
 ### 🚀 Funcionalidades
 
@@ -16,7 +16,7 @@ Este é um projeto de uma aplicação de gerenciamento de tarefas (Todo List) fu
 
 ### 🛠️ Tecnologias Utilizadas
 
-Frontend
+- Frontend
 
     Vue.js 3: Framework JavaScript para a interface do usuário.
 
@@ -26,7 +26,7 @@ Frontend
 
     Axios: Cliente HTTP para comunicação com a API.
 
-Backend
+- Backend
 
     Laravel Framework: Framework PHP para a API RESTful.
 
@@ -36,7 +36,7 @@ Backend
 
     MySQL: Banco de dados relacional.
 
-Infraestrutura
+- Infraestrutura
 
     Docker: Plataforma para empacotar e executar a aplicação.
 
@@ -44,11 +44,11 @@ Infraestrutura
 
 ### ⚙️ Pré-requisitos
 
-Para rodar o projeto na sua máquina, você precisa ter apenas o Docker e o Docker Compose instalados.
+- Para rodar o projeto na sua máquina, você precisa ter apenas o Docker e o Docker Compose instalados.
 
 ### 💻 Instalação e Execução
 
-Siga os passos abaixo para subir a aplicação. O Docker Compose cuidará de toda a configuração do ambiente, incluindo a instalação de dependências.
+- Siga os passos abaixo para subir a aplicação. O Docker Compose cuidará de toda a configuração do ambiente, incluindo a instalação de dependências.
 
 1. Clonar o Repositório
 
@@ -60,100 +60,13 @@ Abra o arquivo .env e configure as variáveis de ambiente, principalmente a do b
 
 3. Iniciar os Contêineres
 
-Execute o seguinte comando para construir as imagens e iniciar todos os contêineres em segundo plano ('docker compose up -d --build').
+Execute o seguinte comando para construir as imagens e iniciar todos os contêineres em segundo plano (docker compose up -d --build).
 
 4. Rodar as Migrations
 
 Com os contêineres rodando, você precisa executar as migrações para criar as tabelas no banco de dados. Use o comando docker-compose exec app php artisan migrate para rodar comandos dentro do contêiner da aplicação.
 
-5. Rodar o front-end
 
-Execute o comando npm install para instalar as dependências do front-end e depois npm run dev para rodar o projeto.
-
-6. Acessar a Aplicação
+5. Acessar a Aplicação
 
 O front-end estará disponível em http://localhost:5173 e a API do back-end em http://localhost:8000.
-
-### 🗺️ Documentação da API
-
-A aplicação front-end se comunica com os seguintes endpoints da API RESTful. Todos os endpoints, exceto o de registro e login, exigem autenticação com um Bearer Token.
-
-Autenticação
-
-POST /api/register
-
-    Descrição: Registra um novo usuário.
-
-    Corpo da Requisição (JSON):
-
-    Resposta de Sucesso (201 Created):
-
-POST /api/login
-
-    Descrição: Autentica um usuário existente.
-
-    Corpo da Requisição (JSON):
-
-    Resposta de Sucesso (200 OK):
-
-POST /api/logout
-
-    Descrição: Invalida o token de autenticação do usuário.
-
-    Autenticação: Sim (Bearer Token)
-
-    Resposta de Sucesso (200 OK):
-
-Gerenciamento de Tarefas
-
-GET /api/user
-
-    Descrição: Retorna os dados do usuário autenticado.
-
-    Autenticação: Sim (Bearer Token)
-
-    Resposta de Sucesso (200 OK):
-
-GET /api/tasks
-
-    Descrição: Lista todas as tarefas do usuário autenticado com paginação.
-
-    Autenticação: Sim (Bearer Token)
-
-    Resposta de Sucesso (200 OK):
-
-POST /api/tasks
-
-    Descrição: Cria uma nova tarefa para o usuário autenticado.
-
-    Autenticação: Sim (Bearer Token)
-
-    Corpo da Requisição (JSON):
-
-    Resposta de Sucesso (201 Created):
-
-GET /api/tasks/{id}
-
-    Descrição: Retorna uma tarefa específica.
-
-    Autenticação: Sim (Bearer Token)
-
-    Resposta de Sucesso (200 OK):
-
-PATCH /api/tasks/{id}
-
-    Descrição: Atualiza uma tarefa existente.
-
-    Autenticação: Sim (Bearer Token)
-
-    Corpo da Requisição (JSON):
-
-    Resposta de Sucesso (200 OK):
-
-DELETE /api/tasks/{id}
-
-    Descrição: Deleta uma tarefa.
-
-    Autenticação: Sim (Bearer Token)
-
-    Resposta de Sucesso (204 No Content): (Resposta sem corpo, indicando sucesso na exclusão).
