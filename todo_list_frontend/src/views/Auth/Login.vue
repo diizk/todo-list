@@ -93,6 +93,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const isRegistering = ref(false);
 
@@ -116,14 +117,18 @@ const login = async () => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/login', loginForm.value);
     
-    const token = response.data.token;
+    const token = response.data.access_token;
+
+    const user = response.data.user;
     
     localStorage.setItem('sanctum_token', token);
+    localStorage.setItem('user_data', JSON.stringify(user));
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     console.log('Login realizado com sucesso!');
-    alert('Login realizado com sucesso!');
+    await nextTick();
+    router.push('/');
   } catch (error) {
     console.error('Falha no login:', error.response.data);
     alert('Erro ao fazer login. Verifique suas credenciais.');
@@ -139,11 +144,16 @@ const register = async () => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/register', registerForm.value);
     console.log('Registro realizado com sucesso:', response.data);
-    alert('Registro realizado com sucesso!');
     isRegistering.value = false;
+    router.push('/');
   } catch (error) {
-    console.error('Falha no registro:', error.response.data);
-    alert('Erro ao registrar. Tente novamente.');
+    if (error.response) {
+      console.error('Falha no registro:', error.response.data);
+      alert('Erro ao registrar. Tente novamente.');
+    } else {
+      console.error('Erro de rede:', error.message);
+      alert('Erro de rede. Verifique a sua conexão ou se o servidor está online.');
+    }
   }
 };
 </script>
