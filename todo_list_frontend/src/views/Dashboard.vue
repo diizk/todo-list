@@ -76,6 +76,31 @@
             Criar Tarefa
           </button>
         </div>
+
+        <div class="flex items-center justify-center space-x-4 py-4" v-if="tasks.length > 0">
+          <button
+            @click="goToPreviousPage"
+            :disabled="currentPage === 1"
+            :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1 }"
+            class="p-2 rounded-full text-gray-600 hover:bg-gray-200"
+          >
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <span class="text-lg font-semibold text-gray-700">Página {{ currentPage }} de {{ lastPage }}</span>
+          <button
+            @click="goToNextPage"
+            :disabled="currentPage === lastPage"
+            :class="{ 'opacity-50 cursor-not-allowed': currentPage === lastPage }"
+            class="p-2 rounded-full text-gray-600 hover:bg-gray-200"
+          >
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+
         <div class="space-y-4">
           <div
             v-for="task in tasks"
@@ -146,7 +171,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue'; 
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 
@@ -155,6 +180,11 @@ const route = useRoute();
 const userName = ref('');
 const tasks = ref([]);
 const isMenuOpen = ref(false);
+
+// Variáveis de Paginação
+const currentPage = ref(1);
+const lastPage = ref(1);
+const links = ref([]);
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -187,10 +217,13 @@ const fetchAuthenticatedUser = async () => {
   }
 };
 
-const fetchTasks = async () => {
+const fetchTasks = async (page = 1) => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/tasks');
+    const response = await axios.get(`http://127.0.0.1:8000/api/tasks?page=${page}`);
     tasks.value = response.data.data;
+    currentPage.value = response.data.current_page;
+    lastPage.value = response.data.last_page;
+    links.value = response.data.links;
   } catch (error) {
     console.error('Erro ao buscar tarefas:', error);
   }
@@ -199,6 +232,7 @@ const fetchTasks = async () => {
 const updateStatus = async (task) => {
   try {
     await axios.patch(`http://127.0.0.1:8000/api/tasks/${task.id}`, { status: task.status });
+    alert('Status atualizado!');
   } catch (error) {
     console.error('Erro ao atualizar status:', error);
     alert('Falha ao atualizar o status.');
@@ -210,10 +244,23 @@ const deleteTask = async (taskId) => {
     try {
       await axios.delete(`http://127.0.0.1:8000/api/tasks/${taskId}`);
       tasks.value = tasks.value.filter(task => task.id !== taskId);
+      fetchTasks(currentPage.value);
     } catch (error) {
       console.error('Erro ao deletar tarefa:', error);
       alert('Falha ao deletar a tarefa.');
     }
+  }
+};
+
+const goToNextPage = () => {
+  if (currentPage.value < lastPage.value) {
+    fetchTasks(currentPage.value + 1);
+  }
+};
+
+const goToPreviousPage = () => {
+  if (currentPage.value > 1) {
+    fetchTasks(currentPage.value - 1);
   }
 };
 
