@@ -19,7 +19,7 @@ class TaskController extends Controller
     {
         $tasks = Auth::user()->tasks()
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(8);
 
         return response()->json($tasks);
     }
