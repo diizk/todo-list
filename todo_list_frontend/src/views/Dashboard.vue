@@ -190,7 +190,7 @@ const fetchAuthenticatedUser = async () => {
 const fetchTasks = async () => {
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/tasks');
-    tasks.value = response.data;
+    tasks.value = response.data.data;
   } catch (error) {
     console.error('Erro ao buscar tarefas:', error);
   }
