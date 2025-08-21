@@ -146,11 +146,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onActivated } from 'vue'; // Importe onActivated
-import { useRouter } from 'vue-router';
+import { ref, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 
 const router = useRouter();
+const route = useRoute();
 const userName = ref('');
 const tasks = ref([]);
 const isMenuOpen = ref(false);
@@ -170,19 +171,19 @@ const getStatusColor = (status) => {
 
 const logout = () => {
   localStorage.removeItem('sanctum_token');
+  localStorage.removeItem('user_data');
   axios.defaults.headers.common['Authorization'] = null;
   router.push('/login');
 };
 
-const fetchUserData = async () => {
+const fetchAuthenticatedUser = async () => {
   try {
-    const storedUser = localStorage.getItem('user_data');
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      userName.value = user.name;
-    }
+    const response = await axios.get('http://127.0.0.1:8000/api/user');
+    userName.value = response.data.name;
+    localStorage.setItem('user_data', JSON.stringify(response.data));
   } catch (error) {
-    console.error('Erro ao buscar dados do usuário:', error);
+    console.error('Erro ao buscar dados do usuário autenticado:', error);
+    router.push('/login');
   }
 };
 
@@ -198,7 +199,6 @@ const fetchTasks = async () => {
 const updateStatus = async (task) => {
   try {
     await axios.patch(`http://127.0.0.1:8000/api/tasks/${task.id}`, { status: task.status });
-    alert('Status atualizado!');
   } catch (error) {
     console.error('Erro ao atualizar status:', error);
     alert('Falha ao atualizar o status.');
@@ -210,7 +210,6 @@ const deleteTask = async (taskId) => {
     try {
       await axios.delete(`http://127.0.0.1:8000/api/tasks/${taskId}`);
       tasks.value = tasks.value.filter(task => task.id !== taskId);
-      alert('Tarefa deletada com sucesso!');
     } catch (error) {
       console.error('Erro ao deletar tarefa:', error);
       alert('Falha ao deletar a tarefa.');
@@ -226,12 +225,14 @@ const goToCreateTask = () => {
   router.push({ name: 'CreateTask' });
 };
 
-onMounted(() => {
-  fetchUserData();
-  fetchTasks();
+watch(() => route.path, (newPath) => {
+  if (newPath === '/') {
+    fetchTasks();
+  }
 });
 
-onActivated(() => {
+onMounted(() => {
+  fetchAuthenticatedUser();
   fetchTasks();
 });
 </script>
