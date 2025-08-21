@@ -1,14 +1,14 @@
 <template>
-  <div class="flex h-screen bg-gray-100">
+  <div class="flex h-screen">
     <Sidebar />
 
     <main class="flex-1 p-6 overflow-y-auto">
       <div class="max-w-4xl mx-auto">
         <div class="flex items-center justify-between mb-6">
-          <h1 class="text-3xl font-bold text-gray-800">Minhas Tarefas</h1>
+          <h1 class="text-3xl font-bold text-text-light">Minhas Tarefas</h1>
           <button
             @click="goToCreateTask"
-            class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none"
+            class="px-4 py-2 text-text-light bg-primary-blue rounded-md hover:bg-secondary-purple transition-colors duration-200 focus:outline-none"
           >
             Criar Tarefa
           </button>
@@ -19,18 +19,18 @@
             @click="goToPreviousPage"
             :disabled="currentPage === 1"
             :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1 }"
-            class="p-2 rounded-full text-gray-600 hover:bg-gray-200"
+            class="p-2 rounded-full text-text-light hover:bg-secondary-purple transition-colors duration-200"
           >
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
-          <span class="text-lg font-semibold text-gray-700">Página {{ currentPage }} de {{ lastPage }}</span>
+          <span class="text-lg font-semibold text-text-light">Página {{ currentPage }} de {{ lastPage }}</span>
           <button
             @click="goToNextPage"
             :disabled="currentPage === lastPage"
             :class="{ 'opacity-50 cursor-not-allowed': currentPage === lastPage }"
-            class="p-2 rounded-full text-gray-600 hover:bg-gray-200"
+            class="p-2 rounded-full text-text-light hover:bg-secondary-purple transition-colors duration-200"
           >
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -43,24 +43,31 @@
             v-for="task in tasks"
             :key="task.id"
             @click="goToEditTask(task.id)"
-            class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md cursor-pointer"
+            class="flex items-center justify-between p-4 bg-dark-card rounded-lg shadow-md cursor-pointer hover:scale-105 transition-transform duration-200"
           >
-            <span class="text-lg font-medium text-gray-900">{{ task.title }}</span>
+            <span class="text-lg font-medium text-text-light">{{ task.title }}</span>
 
             <div class="flex items-center space-x-4">
-              <select
-                v-model="task.status"
-                @click.stop
-                @change="updateStatus(task)"
-                :class="getStatusColor(task.status)"
-                class="px-3 py-1 text-white rounded-md shadow-sm appearance-none focus:outline-none"
-              >
-                <option value="pending" class="bg-red-500">Pendente</option>
-                <option value="in_progress" class="bg-yellow-500">Em Progresso</option>
-                <option value="done" class="bg-green-500">Concluído</option>
-              </select>
+              <div class="relative">
+                <select
+                  v-model="task.status"
+                  @click.stop
+                  @change="updateStatus(task)"
+                  :class="getStatusColor(task.status)"
+                  class="px-3 py-1 rounded-md shadow-sm text-center focus:outline-none appearance-none pr-8"
+                >
+                  <option value="pending" class="bg-[#F0A7A0] text-[#383D3B]">Pendente</option>
+                  <option value="in_progress" class="bg-[#FFCBA4] text-[#383D3B]">Em Progresso</option>
+                  <option value="done" class="bg-[#A8D0A5] text-[#383D3B]">Concluído</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                  <svg class="w-4 h-4 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
 
-              <button @click.stop="deleteTask(task.id)" class="text-gray-400 hover:text-red-600 focus:outline-none">
+              <button @click.stop="deleteTask(task.id)" class="p-1 rounded-md text-text-light hover:text-accent-pink transition-colors duration-200 focus:outline-none">
                 <svg
                   class="w-6 h-6"
                   fill="none"
@@ -101,13 +108,13 @@ const links = ref([]);
 const getStatusColor = (status) => {
   switch (status) {
     case 'in_progress':
-      return 'bg-yellow-500';
+      return 'bg-[#FFCBA4] text-[#383D3B]';
     case 'done':
-      return 'bg-green-500';
+      return 'bg-[#A8D0A5] text-[#383D3B]';
     case 'pending':
-      return 'bg-red-500';
+      return 'bg-[#F0A7A0] text-[#383D3B]';
     default:
-      return 'bg-gray-400';
+      return 'bg-gray-400 text-[#383D3B]';
   }
 };
 
@@ -177,5 +184,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Adicione estilos específicos do componente aqui se necessário */
 </style>
