@@ -69,7 +69,7 @@ const isEditing = ref(false);
 const task = ref({
   title: '',
   description: '',
-  status: 'pending' // Estado inicial para o select
+  status: 'pending'
 });
 
 onMounted(async () => {
@@ -77,7 +77,7 @@ onMounted(async () => {
     isEditing.value = true;
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/tasks/${route.params.id}`);
-      task.value = response.data.data;
+      task.value = response.data;
     } catch (error) {
       console.error('Erro ao buscar tarefa:', error);
       alert('Não foi possível carregar a tarefa.');
@@ -97,10 +97,8 @@ const submitTask = async () => {
   try {
     if (isEditing.value) {
       await axios.patch(`http://127.0.0.1:8000/api/tasks/${route.params.id}`, task.value);
-      alert('Tarefa atualizada com sucesso!');
     } else {
       await axios.post('http://127.0.0.1:8000/api/tasks', task.value);
-      alert('Tarefa criada com sucesso!');
     }
     router.push('/');
   } catch (error) {
