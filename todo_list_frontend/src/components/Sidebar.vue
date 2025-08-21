@@ -1,6 +1,5 @@
 <template>
   <aside class="w-64 bg-dark-card p-4 space-y-4 shadow-lg flex flex-col">
-    <!-- Título da Aplicação -->
     <div class="flex items-center space-x-2 pb-4 border-b border-gray-700">
       <svg
         class="h-8 w-8 text-primary-blue"
@@ -19,7 +18,6 @@
       <span class="text-xl font-bold text-text-light">Todo List</span>
     </div>
 
-    <!-- Navegação Principal -->
     <nav class="space-y-2 pt-4">
       <router-link
         to="/"
@@ -47,8 +45,7 @@
       </router-link>
     </nav>
 
-    <!-- Informações do Usuário -->
-    <div class="pt-8 mt-auto"> <!-- mt-auto para empurrar para baixo -->
+    <div class="pt-8 mt-auto">
       <div class="text-sm font-semibold text-gray-400 mb-2">Usuário:</div>
       <div class="flex items-center space-x-2">
         <div class="flex-shrink-0">
@@ -69,8 +66,7 @@
         </div>
       </div>
     </div>
-    
-    <!-- Botão de Sair -->
+
     <div class="mt-4">
       <button
         @click="logout"
@@ -102,7 +98,7 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 
 const router = useRouter();
-const route = useRoute(); // Necessário para verificar a rota atual
+const route = useRoute();
 const userName = ref('');
 
 const fetchAuthenticatedUser = async () => {
