@@ -15,7 +15,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Auth::user()->tasks;
+        $tasks = Auth::user()->tasks()
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return response()->json($tasks);
     }
@@ -25,23 +27,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
             'status' => 'required|in:pending,in_progress,done',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => 'Validation Failed',
-                'messages' => $validator->errors()
-            ], 422);
-        }
+        $validatedData['user_id'] = Auth::id();
 
-        $task = new Task();
-        $task->title = $request->title;
-        $task->status = $request->status;
-        $task->user_id = Auth::id();
-        $task->save();
+        $task = Task::create($validatedData);
 
         return response()->json($task, 201);
     }
