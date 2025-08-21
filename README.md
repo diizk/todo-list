@@ -60,7 +60,7 @@ Abra o arquivo .env e configure as variáveis de ambiente, principalmente a do b
 
 3. Iniciar os Contêineres
 
-Execute o seguinte comando para construir as imagens e iniciar todos os contêineres em segundo plano (docker compose up -d --build).
+Execute o seguinte comando para construir as imagens e iniciar todos os contêineres em segundo plano ('docker compose up -d --build').
 
 4. Rodar as Migrations
 
