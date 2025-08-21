@@ -126,7 +126,6 @@ const fetchTasks = async (page = 1) => {
 const updateStatus = async (task) => {
   try {
     await axios.patch(`http://127.0.0.1:8000/api/tasks/${task.id}`, { status: task.status });
-    alert('Status atualizado!');
   } catch (error) {
     console.error('Erro ao atualizar status:', error);
     alert('Falha ao atualizar o status.');
