@@ -65,6 +65,16 @@
             class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
           />
         </div>
+        <div>
+          <label for="password-confirm" class="block text-sm font-medium text-gray-700">Confirmação de Senha</label>
+          <input
+            id="password-confirm"
+            v-model="registerForm.password_confirmation"
+            type="password"
+            required
+            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
         <button
           type="submit"
           class="w-full px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700"
@@ -94,7 +104,8 @@ const loginForm = ref({
 const registerForm = ref({
   name: '',
   email: '',
-  password: ''
+  password: '',
+  password_confirmation: ''
 });
 
 const toggleForm = () => {
@@ -114,6 +125,11 @@ const login = async () => {
 };
 
 const register = async () => {
+  if (registerForm.value.password !== registerForm.value.password_confirmation) {
+    alert('As senhas não coincidem!');
+    return;
+  }
+
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/register', registerForm.value);
     console.log('Registration successful:', response.data);
