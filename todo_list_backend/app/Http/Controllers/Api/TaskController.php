@@ -7,9 +7,11 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -57,21 +59,13 @@ class TaskController extends Controller
     {
         $this->authorize('update', $task);
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'status' => 'required|in:pending,in_progress,done',
+        $validatedData = $request->validate([
+            'title' => 'string|max:255',
+            'status' => 'in:pending,in_progress,done',
+            'description' => 'nullable|string|max:1000',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => 'Validation Failed',
-                'messages' => $validator->errors()
-            ], 422);
-        }
-
-        $task->title = $request->title;
-        $task->status = $request->status;
-        $task->save();
+        $task->update($validatedData);
 
         return response()->json($task);
     }
