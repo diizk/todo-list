@@ -115,11 +115,17 @@ const toggleForm = () => {
 const login = async () => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/login', loginForm.value);
-    console.log('Login successful:', response.data);
+    
+    const token = response.data.token;
+    
+    localStorage.setItem('sanctum_token', token);
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    console.log('Login realizado com sucesso!');
     alert('Login realizado com sucesso!');
-    // TODO: Redirecionar para a página de tarefas ou salvar o token
   } catch (error) {
-    console.error('Login failed:', error.response.data);
+    console.error('Falha no login:', error.response.data);
     alert('Erro ao fazer login. Verifique suas credenciais.');
   }
 };
@@ -132,11 +138,11 @@ const register = async () => {
 
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/register', registerForm.value);
-    console.log('Registration successful:', response.data);
+    console.log('Registro realizado com sucesso:', response.data);
     alert('Registro realizado com sucesso!');
-    isRegistering.value = false; // Alterna para a tela de login após o registro
+    isRegistering.value = false;
   } catch (error) {
-    console.error('Registration failed:', error.response.data);
+    console.error('Falha no registro:', error.response.data);
     alert('Erro ao registrar. Tente novamente.');
   }
 };
