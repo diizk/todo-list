@@ -1,8 +1,9 @@
 <template>
-  <aside class="w-64 bg-white p-4 space-y-4 shadow-lg">
-    <div class="flex items-center space-x-2">
+  <aside class="w-64 bg-dark-card p-4 space-y-4 shadow-lg flex flex-col">
+    <!-- Título da Aplicação -->
+    <div class="flex items-center space-x-2 pb-4 border-b border-gray-700">
       <svg
-        class="h-8 w-8 text-blue-600"
+        class="h-8 w-8 text-primary-blue"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -15,16 +16,17 @@
           d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M16 16h.01"
         ></path>
       </svg>
-      <span class="text-xl font-bold text-gray-800">Todo List</span>
+      <span class="text-xl font-bold text-text-light">Todo List</span>
     </div>
 
-    <nav class="space-y-2">
+    <!-- Navegação Principal -->
+    <nav class="space-y-2 pt-4">
       <router-link
         to="/"
-        class="flex items-center space-x-2 p-2 rounded-lg"
+        class="flex items-center space-x-2 p-2 rounded-lg transition-colors duration-200"
         :class="{
-          'bg-blue-100 text-blue-700 font-medium': route.path === '/',
-          'text-gray-600 hover:bg-gray-100': route.path !== '/'
+          'bg-primary-blue text-text-light font-medium': route.path === '/',
+          'text-text-light hover:bg-white/10': route.path !== '/'
         }"
       >
         <svg
@@ -45,8 +47,9 @@
       </router-link>
     </nav>
 
-    <div class="pt-8">
-      <div class="text-sm font-semibold text-gray-500 mb-2">Usuário:</div>
+    <!-- Informações do Usuário -->
+    <div class="pt-8 mt-auto"> <!-- mt-auto para empurrar para baixo -->
+      <div class="text-sm font-semibold text-gray-400 mb-2">Usuário:</div>
       <div class="flex items-center space-x-2">
         <div class="flex-shrink-0">
           <svg
@@ -61,15 +64,17 @@
           </svg>
         </div>
         <div>
-          <div class="text-lg font-bold text-gray-900">{{ userName }}</div>
+          <div class="text-lg font-bold text-text-light">{{ userName }}</div>
           <div class="text-sm text-gray-500">Online</div>
         </div>
       </div>
     </div>
-    <div class="mt-auto">
+    
+    <!-- Botão de Sair -->
+    <div class="mt-4">
       <button
         @click="logout"
-        class="w-full flex items-center justify-center px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none"
+        class="w-full flex items-center justify-center px-4 py-2 text-text-light bg-red-600 rounded-md hover:bg-red-700 focus:outline-none transition-colors duration-200"
       >
         <svg
           class="w-5 h-5 mr-2"
@@ -97,7 +102,7 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 
 const router = useRouter();
-const route = useRoute();
+const route = useRoute(); // Necessário para verificar a rota atual
 const userName = ref('');
 
 const fetchAuthenticatedUser = async () => {
