@@ -54,8 +54,9 @@ cd todo_list
 
 ### 2. Configurar Variáveis de Ambiente
 Crie um arquivo `.env` na raiz do projeto (mesma pasta do `docker-compose.yml`):  
-```bash
-cp .env.example .env
+```
+Gere uma App Key para preencher no .env e no .env.testing
+docker-compose exec app php artisan key:generate
 ```
 Edite as variáveis, principalmente as do banco de dados e do **Laravel Sanctum**.  
 O host do banco deve ser o mesmo definido no `docker-compose.yml` (por padrão: `db`).  
@@ -69,6 +70,10 @@ docker-compose up -d --build
 ### 4. Rodar as Migrations
 ```bash
 docker-compose exec app php artisan migrate
+```
+É possível também popular o banco utilizando as factories.
+```
+docker-compose exec app php artisan db:seed
 ```
 
 ### 5. Rodar o Front-end
@@ -150,3 +155,4 @@ docker-compose exec app sh
 
 ./vendor/bin/pest
 ```
+Pode ser necessário preencher a APP_KEY em .env.testing
