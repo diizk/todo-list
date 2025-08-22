@@ -105,7 +105,6 @@ onMounted(async () => {
       const response = await axios.get(`http://127.0.0.1:8000/api/tasks/${route.params.id}`);
       task.value = response.data;
     } catch (error) {
-      console.error('Erro ao buscar tarefa:', error);
       alert('Não foi possível carregar a tarefa.');
       router.back();
     }
@@ -128,7 +127,6 @@ const submitTask = async () => {
     }
     router.push('/');
   } catch (error) {
-    console.error('Erro ao salvar tarefa:', error.response.data);
     alert('Falha ao salvar a tarefa.');
   }
 };
