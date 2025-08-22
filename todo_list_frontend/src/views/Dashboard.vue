@@ -134,7 +134,6 @@ const updateStatus = async (task) => {
   try {
     await axios.patch(`http://127.0.0.1:8000/api/tasks/${task.id}`, { status: task.status });
   } catch (error) {
-    console.error('Erro ao atualizar status:', error);
     alert('Falha ao atualizar o status.');
   }
 };
@@ -146,7 +145,6 @@ const deleteTask = async (taskId) => {
       tasks.value = tasks.value.filter(task => task.id !== taskId);
       fetchTasks(currentPage.value);
     } catch (error) {
-      console.error('Erro ao deletar tarefa:', error);
       alert('Falha ao deletar a tarefa.');
     }
   }
