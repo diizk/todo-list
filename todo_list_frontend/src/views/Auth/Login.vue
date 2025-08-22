@@ -127,10 +127,8 @@ const login = async () => {
     
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-    console.log('Login realizado com sucesso!');
     router.push('/');
   } catch (error) {
-    console.error('Falha no login:', error.response.data);
     alert('Erro ao fazer login. Verifique suas credenciais.');
   }
 };
@@ -143,15 +141,12 @@ const register = async () => {
 
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/register', registerForm.value);
-    console.log('Registro realizado com sucesso:', response.data);
     isRegistering.value = false;
     router.push('/');
   } catch (error) {
     if (error.response) {
-      console.error('Falha no registro:', error.response.data);
       alert('Erro ao registrar. Tente novamente.');
     } else {
-      console.error('Erro de rede:', error.message);
       alert('Erro de rede. Verifique a sua conexão ou se o servidor está online.');
     }
   }
