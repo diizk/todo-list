@@ -107,7 +107,6 @@ const fetchAuthenticatedUser = async () => {
     userName.value = response.data.name;
     localStorage.setItem('user_data', JSON.stringify(response.data));
   } catch (error) {
-    console.error('Erro ao buscar dados do usuário autenticado:', error);
     router.push('/login');
   }
 };
