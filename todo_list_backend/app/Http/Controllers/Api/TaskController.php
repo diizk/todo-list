@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
@@ -27,14 +29,9 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
-            'status' => 'required|in:pending,in_progress,done',
-        ]);
-
+        $validatedData = $request->validated();
         $validatedData['user_id'] = Auth::id();
 
         $task = Task::create($validatedData);
@@ -55,15 +52,11 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
         $this->authorize('update', $task);
 
-        $validatedData = $request->validate([
-            'title' => 'string|max:255',
-            'status' => 'in:pending,in_progress,done',
-            'description' => 'nullable|string|max:1000',
-        ]);
+        $validatedData = $request->validated();
 
         $task->update($validatedData);
 
