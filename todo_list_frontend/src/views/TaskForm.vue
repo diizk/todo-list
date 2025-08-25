@@ -102,7 +102,7 @@ onMounted(async () => {
   if (route.name === 'EditTask') {
     isEditing.value = true;
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/tasks/${route.params.id}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}tasks/${route.params.id}`);
       task.value = response.data;
     } catch (error) {
       alert('Não foi possível carregar a tarefa.');
@@ -121,9 +121,9 @@ onMounted(async () => {
 const submitTask = async () => {
   try {
     if (isEditing.value) {
-      await axios.patch(`http://127.0.0.1:8000/api/tasks/${route.params.id}`, task.value);
+      await axios.patch(`${import.meta.env.VITE_API_BASE_URL}tasks/${route.params.id}`, task.value);
     } else {
-      await axios.post('http://127.0.0.1:8000/api/tasks', task.value);
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}tasks`, task.value);
     }
     router.push('/');
   } catch (error) {

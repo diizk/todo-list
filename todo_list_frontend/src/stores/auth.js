@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
       try {
-        const response = await axios.get('http://localhost:8080/api/user');
+        const response = await axios.get(import.meta.env.VITE_API_BASE_URL + 'user');
         this.user = response.data;
       } catch (error) {
         this.clearToken();

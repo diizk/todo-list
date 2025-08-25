@@ -103,7 +103,7 @@ const userName = ref('');
 
 const fetchAuthenticatedUser = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user');
+    const response = await axios.get(import.meta.env.VITE_API_BASE_URL + 'user');
     userName.value = response.data.name;
     localStorage.setItem('user_data', JSON.stringify(response.data));
   } catch (error) {

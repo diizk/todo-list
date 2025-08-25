@@ -120,7 +120,7 @@ const getStatusColor = (status) => {
 
 const fetchTasks = async (page = 1) => {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/tasks?page=${page}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}tasks?page=${page}`);
     tasks.value = response.data.data;
     currentPage.value = response.data.current_page;
     lastPage.value = response.data.last_page;
@@ -132,7 +132,7 @@ const fetchTasks = async (page = 1) => {
 
 const updateStatus = async (task) => {
   try {
-    await axios.patch(`http://127.0.0.1:8000/api/tasks/${task.id}`, { status: task.status });
+    await axios.patch(`${import.meta.env.VITE_API_BASE_URL}tasks/${task.id}`, { status: task.status });
   } catch (error) {
     alert('Falha ao atualizar o status.');
   }
@@ -141,7 +141,7 @@ const updateStatus = async (task) => {
 const deleteTask = async (taskId) => {
   if (confirm('Tem certeza que deseja deletar esta tarefa?')) {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/tasks/${taskId}`);
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}tasks/${taskId}`);
       tasks.value = tasks.value.filter(task => task.id !== taskId);
       fetchTasks(currentPage.value);
     } catch (error) {
